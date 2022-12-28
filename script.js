@@ -25,10 +25,35 @@ function stopVideo() {
   video.pause();
 }
 
+function updateProgressSlider() {
+  progress.value = (video.currentTime / video.duration) * 100;
+
+  // setting up timestamp
+
+  let minutes = Math.floor(video.currentTime / 60);
+  if (minutes < 10) {
+    minutes = '0' + String(minutes);
+  }
+
+  let seconds = Math.floor(video.currentTime % 60);
+  if (seconds < 10) {
+    seconds = '0' + String(seconds);
+  }
+
+  timestamp.innerHTML = minutes + ':' + seconds;
+}
+
+function changeProgress() {
+  video.currentTime = (+progress.value * video.duration) / 100;
+}
+
 video.addEventListener('click', updateVideoStatus);
 video.addEventListener('play', updatePlayIcon);
 video.addEventListener('pause', updatePlayIcon);
+video.addEventListener('timeupdate', updateProgressSlider);
 
 play.addEventListener('click', updateVideoStatus);
 
 stop.addEventListener('click', stopVideo);
+
+progress.addEventListener('change', changeProgress);
